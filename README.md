@@ -23,7 +23,7 @@ La réalisation de cette application s'est déroulé selon le plan suivant :
 - la mise en place d'un service qui va faire les différent traitement : renvoie de la list, calcule de la distance, vérification des places disponibles
 - la création d'un service d'affichage pour l'affichage de la liste
 
-Les données utilisées sont celles de set de données disponible via cette url : https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilite-parkings-grand-poitiers-donnees-metiers&rows=1&facet=nom_du_parking&facet=zone_tarifaire&facet=statut2&facet=statut3
+Les données utilisées sont celles de set de données disponible via cette url : https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilite-parkings-grand-poitiers-donnees-metiers&rows=1&facet=nom_du_parking&facet=zone_tarifaire&facet=statut2&facet=statut3  
 ainsi que les données de stationnement des parkings sont disponible ici : https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilites-stationnement-des-parkings-en-temps-reel&facet=nom
 
 ## Lancer l'application
