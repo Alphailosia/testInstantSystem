@@ -9,10 +9,12 @@ import java.util.List;
 public class LogService {
 
     public String afficheList(List<Parking> liste){
+        int increment=1;
         String result = "=========== Parkings proches ============= \n";
 
         for (Parking parking : liste){
-            result+="\t-\t"+parking.toString()+"\n";
+            result+="\t"+increment+" -\t"+parking.toString()+"\n";
+            increment++;
         }
 
         result += "=============================================";
