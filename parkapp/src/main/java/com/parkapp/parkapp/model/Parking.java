@@ -66,10 +66,8 @@ public class Parking {
 
     @Override
     public String toString() {
-        return "Parking{" +
+        return "Parking {" +
                 "name='" + name + '\'' +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
                 ", nbPlaceInitial=" + nbPlaceInitial +
                 ", nbPlaceRestante=" + nbPlaceRestante +
                 ", distanceUtilisateur=" + distanceUtilisateur +
