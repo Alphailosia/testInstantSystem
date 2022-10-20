@@ -41,7 +41,7 @@ Vous pouvez modifier les valeurs latitude et longitude afin de voir la liste cha
 
 ## Amélioration possible
 
-Il y a plusieurs façon d'améliorer l'application :
+Il y a plusieurs possibilité pour améliorer l'application :
 
-- avoir un dataset sur plusieur villes afin d'étendre le périmètre de l'application
+- avoir un dataset sur plusieurs villes afin d'étendre le périmètre de l'application
 - ajouter un test d'intégration
