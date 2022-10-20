@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.parkapp.parkapp.model.Parking;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("parkingService")
+@Getter @Setter
 public class ParkingService {
 
     @Value("${url.parking.placeremaining}")
@@ -35,6 +38,7 @@ public class ParkingService {
         RestTemplate restTemplate = new RestTemplate();
 
         // récupération des données
+
         String data = restTemplate.getForObject(uriParkingLocation, String.class);
 
         // traitement des données

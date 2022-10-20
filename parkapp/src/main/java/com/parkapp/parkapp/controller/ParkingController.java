@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URISyntaxException;
 import java.util.List;
 @RestController
 public class ParkingController {
@@ -19,7 +20,7 @@ public class ParkingController {
     ParkingService parkingService;
 
     @RequestMapping(value = "/parkings",method = RequestMethod.GET)
-    public ResponseEntity<List<Parking>> getParkings(@RequestParam double latitude, @RequestParam double longitude){
+    public ResponseEntity<List<Parking>> getParkings(@RequestParam double latitude, @RequestParam double longitude) throws URISyntaxException {
         List<Parking> parkings = parkingService.getParkings(latitude, longitude);
         return ResponseEntity.ok(parkings);
     }

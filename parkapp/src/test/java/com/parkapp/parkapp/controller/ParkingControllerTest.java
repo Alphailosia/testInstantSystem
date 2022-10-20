@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ class ParkingControllerTest {
     ParkingService parkingService;
 
     @Test
-    void getParkings() {
+    void getParkings() throws URISyntaxException {
 
         List<Parking> test =  new ArrayList<>();
 
