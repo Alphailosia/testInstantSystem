@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.parkapp.parkapp.model.Parking;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +14,15 @@ import java.util.List;
 
 @Service("parkingService")
 public class ParkingService {
+
+    @Value("${url.parking.placeremaining}")
+    private String uriPlaceRemaining;
+    @Value("${url.parkaing.location}")
+    private String uriParkingLocation;
+    @Value("${distance.from.parking}")
+    private int defaultDistance;
+    @Value("${earth.radius}")
+    private int earthRadius;
 
     /**
      * Revoie la liste des parking les plus proches de l'utilisateur (à moins d'un kilomètre de distance
@@ -25,8 +35,8 @@ public class ParkingService {
         RestTemplate restTemplate = new RestTemplate();
 
         // récupération des données
-        String uri = "https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilite-parkings-grand-poitiers-donnees-metiers&rows=1000&facet=nom_du_parking&facet=zone_tarifaire&facet=statut2&facet=statut3";
-        String data = restTemplate.getForObject(uri, String.class);
+
+        String data = restTemplate.getForObject(uriParkingLocation, String.class);
 
         // traitement des données
         ObjectMapper objectMapper = new ObjectMapper();
@@ -47,19 +57,19 @@ public class ParkingService {
                 double distance = calculDistance(longitudeParking, latitudeParking,longitude,latitude);
 
                 // ajout dans la list ou non
-                if(distance<1000){
+                if(distance<defaultDistance){
                     Parking parking = new Parking(nom,longitudeParking, latitudeParking, nbPlaceInitial);
 
-                    parking.setDistanceUtilisateur(distance);
+                    parking.setDistanceUser(distance);
 
                     // vérification du nombre de places restantes
-                    int nbPlacesRestantes = getNbPlacesRestante(parking.getName());
+                    int nbPlacesRemaining = getNbPlacesRemaining(parking.getName());
 
-                    if(nbPlacesRestantes==0){
-                        parking.setNbPlaceRestante(nbPlaceInitial);
+                    if(nbPlacesRemaining==0){
+                        parking.setNbPlaceRemaining(nbPlaceInitial);
                     }
                     else{
-                        parking.setNbPlaceRestante(nbPlacesRestantes);
+                        parking.setNbPlaceRemaining(nbPlacesRemaining);
                     }
 
                     result.add(parking);
@@ -78,12 +88,11 @@ public class ParkingService {
      * @param parkingName
      * @return
      */
-    public int getNbPlacesRestante(String parkingName){
+    private int getNbPlacesRemaining(String parkingName){
         RestTemplate restTemplate = new RestTemplate();
 
         // récupération des données
-        String uri = "https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilites-stationnement-des-parkings-en-temps-reel&facet=nom";
-        String data = restTemplate.getForObject(uri, String.class);
+        String data = restTemplate.getForObject(uriPlaceRemaining, String.class);
 
         // traitement des données
         ObjectMapper objectMapper = new ObjectMapper();
@@ -108,19 +117,17 @@ public class ParkingService {
      * récupéré sur https://prograide.com/pregunta/75209/calculer-la-distance-entre-deux-points-en-utilisant-la-latitude-et-la-longitude
      * @param longitudeParking
      * @param latitudeParking
-     * @param longitudePersonne
-     * @param latitudePersonne
+     * @param longitudeUser
+     * @param latitudeUser
      * @return distance entre la personne et le parking
      */
-    public double calculDistance(double longitudeParking, double latitudeParking, double longitudePersonne , double latitudePersonne ){
+    private double calculDistance(double longitudeParking, double latitudeParking, double longitudeUser , double latitudeUser ){
 
-        final int r = 6371;
-        // Radius of the earth
-        double latDistance = Math.toRadians(latitudePersonne - latitudeParking);
-        double lonDistance = Math.toRadians(longitudePersonne - longitudeParking);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(latitudeParking)) * Math.cos(Math.toRadians(latitudePersonne)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double latDistance = Math.toRadians(latitudeUser - latitudeParking);
+        double lonDistance = Math.toRadians(longitudeUser - longitudeParking);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(latitudeParking)) * Math.cos(Math.toRadians(latitudeUser)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = r * c * 1000; // convert to meters
+        double distance = earthRadius * c * 1000; // convert to meters
 
         distance = Math.pow(distance, 2) + Math.pow(0.0, 2);
 
