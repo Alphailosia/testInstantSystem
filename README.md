@@ -26,6 +26,8 @@ La réalisation de cette application s'est déroulé selon le plan suivant :
 Les données utilisées sont celles de set de données disponible via cette url : https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilite-parkings-grand-poitiers-donnees-metiers&rows=1&facet=nom_du_parking&facet=zone_tarifaire&facet=statut2&facet=statut3  
 ainsi que les données de stationnement des parkings sont disponible ici : https://data.grandpoitiers.fr/api/records/1.0/search/?dataset=mobilites-stationnement-des-parkings-en-temps-reel&facet=nom
 
+Le temps passé pour réaliser cette application est de 10h30 environ.
+
 ## Lancer l'application
 
 Afin de pouvoir lancer l'application, il faut :
@@ -36,3 +38,10 @@ Afin de pouvoir lancer l'application, il faut :
 - entrer l'url suivante http://localhost:8080/parkings?latitude=46.58595804860371&longitude=0.351295426580696
 
 Vous pouvez modifier les valeurs latitude et longitude afin de voir la liste changer
+
+## Amélioration possible
+
+Il y a plusieurs façon d'améliorer l'application :
+
+- avoir un dataset sur plusieur villes afin d'étendre le périmètre de l'application
+- ajouter un test d'intégration
