@@ -35,7 +35,6 @@ public class ParkingService {
         RestTemplate restTemplate = new RestTemplate();
 
         // récupération des données
-
         String data = restTemplate.getForObject(uriParkingLocation, String.class);
 
         // traitement des données
@@ -122,7 +121,7 @@ public class ParkingService {
      * @return distance entre la personne et le parking
      */
     private double calculDistance(double longitudeParking, double latitudeParking, double longitudeUser , double latitudeUser ){
-
+        // Radius of the earth
         double latDistance = Math.toRadians(latitudeUser - latitudeParking);
         double lonDistance = Math.toRadians(longitudeUser - longitudeParking);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(latitudeParking)) * Math.cos(Math.toRadians(latitudeUser)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);

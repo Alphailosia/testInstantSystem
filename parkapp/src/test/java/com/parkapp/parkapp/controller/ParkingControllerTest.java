@@ -4,8 +4,13 @@ import com.parkapp.parkapp.controller.ParkingController;
 import com.parkapp.parkapp.model.Parking;
 import com.parkapp.parkapp.service.ParkingService;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +24,22 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class ParkingControllerTest {
 
-    @Autowired
+    @InjectMocks
     ParkingController parkingController;
+
+    @Mock
+    ParkingService parkingService;
 
     @Test
     void getParkings() {
 
-        ParkingService parkingService = mock(ParkingService.class);
         List<Parking> test =  new ArrayList<>();
 
         when(parkingService.getParkings(anyDouble(), anyDouble())).thenReturn(test);
 
-        parkingService.getParkings(46.58595804860371,0.351295426580696);
+        ResponseEntity<List<Parking>> var =  parkingController.getParkings(46.58595804860371,0.351295426580696);
 
-        assertEquals(14,test.size());
+        assertEquals(test,var.getBody());
+        assertEquals(HttpStatus.OK,var.getStatusCode());
     }
 }
