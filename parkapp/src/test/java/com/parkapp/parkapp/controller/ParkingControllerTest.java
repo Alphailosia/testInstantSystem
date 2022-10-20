@@ -1,5 +1,6 @@
 package com.parkapp.parkapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.parkapp.parkapp.controller.ParkingController;
 import com.parkapp.parkapp.model.Parking;
 import com.parkapp.parkapp.service.ParkingService;
@@ -32,7 +33,7 @@ class ParkingControllerTest {
     ParkingService parkingService;
 
     @Test
-    void getParkings() throws URISyntaxException {
+    void getParkings() throws JsonProcessingException {
 
         List<Parking> test =  new ArrayList<>();
 

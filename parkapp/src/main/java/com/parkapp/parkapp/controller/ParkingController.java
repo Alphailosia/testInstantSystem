@@ -1,5 +1,6 @@
 package com.parkapp.parkapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.parkapp.parkapp.model.Parking;
 import com.parkapp.parkapp.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ParkingController {
     ParkingService parkingService;
 
     @RequestMapping(value = "/parkings",method = RequestMethod.GET)
-    public ResponseEntity<List<Parking>> getParkings(@RequestParam double latitude, @RequestParam double longitude) throws URISyntaxException {
+    public ResponseEntity<List<Parking>> getParkings(@RequestParam double latitude, @RequestParam double longitude) throws JsonProcessingException {
         List<Parking> parkings = parkingService.getParkings(latitude, longitude);
         return ResponseEntity.ok(parkings);
     }

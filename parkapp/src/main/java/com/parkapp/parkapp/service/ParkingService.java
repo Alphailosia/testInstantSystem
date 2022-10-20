@@ -33,7 +33,7 @@ public class ParkingService {
      * @param longitude , longitude de l'utilisateur
      * @return liste des parkings
      */
-    public List<Parking> getParkings(double latitude, double longitude){
+    public List<Parking> getParkings(double latitude, double longitude) throws JsonProcessingException{
         List<Parking> result = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
 
@@ -44,43 +44,39 @@ public class ParkingService {
         // traitement des données
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try {
-            ArrayNode parkings = (ArrayNode) objectMapper.readTree(data).get("records");
+        ArrayNode parkings = (ArrayNode) objectMapper.readTree(data).get("records");
 
-            for(JsonNode node : parkings){
+        for(JsonNode node : parkings){
 
-                JsonNode fields = node.get("fields"); // les informations du parking
+            JsonNode fields = node.get("fields"); // les informations du parking
 
-                String nom = fields.get("nom").textValue();
-                double latitudeParking = fields.get("geo_point_2d").get(0).doubleValue();
-                double longitudeParking = fields.get("geo_point_2d").get(1).doubleValue();
-                int nbPlaceInitial = fields.get("nb_places").intValue();
+            String nom = fields.get("nom").textValue();
+            double latitudeParking = fields.get("geo_point_2d").get(0).doubleValue();
+            double longitudeParking = fields.get("geo_point_2d").get(1).doubleValue();
+            int nbPlaceInitial = fields.get("nb_places").intValue();
 
-                // calcule de la distance
-                double distance = calculDistance(longitudeParking, latitudeParking,longitude,latitude);
+            // calcule de la distance
+            double distance = calculDistance(longitudeParking, latitudeParking,longitude,latitude);
 
-                // ajout dans la list ou non
-                if(distance<defaultDistance){
-                    Parking parking = new Parking(nom,longitudeParking, latitudeParking, nbPlaceInitial);
+            // ajout dans la list ou non
+            if(distance<defaultDistance){
+                Parking parking = new Parking(nom,longitudeParking, latitudeParking, nbPlaceInitial);
 
-                    parking.setDistanceUser(distance);
+                parking.setDistanceUser(distance);
 
-                    // vérification du nombre de places restantes
-                    int nbPlacesRemaining = getNbPlacesRemaining(parking.getName());
+                // vérification du nombre de places restantes
+                int nbPlacesRemaining = getNbPlacesRemaining(parking.getName());
 
-                    if(nbPlacesRemaining==0){
-                        parking.setNbPlaceRemaining(nbPlaceInitial);
-                    }
-                    else{
-                        parking.setNbPlaceRemaining(nbPlacesRemaining);
-                    }
-
-                    result.add(parking);
+                if(nbPlacesRemaining==0){
+                    parking.setNbPlaceRemaining(nbPlaceInitial);
+                }
+                else{
+                    parking.setNbPlaceRemaining(nbPlacesRemaining);
                 }
 
+                result.add(parking);
             }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+
         }
 
         return result;
@@ -91,7 +87,7 @@ public class ParkingService {
      * @param parkingName
      * @return
      */
-    private int getNbPlacesRemaining(String parkingName){
+    private int getNbPlacesRemaining(String parkingName) throws JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();
 
         // récupération des données
@@ -100,18 +96,14 @@ public class ParkingService {
         // traitement des données
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try {
-            ArrayNode parkings = (ArrayNode) objectMapper.readTree(data).get("records");
+        ArrayNode parkings = (ArrayNode) objectMapper.readTree(data).get("records");
 
-            for(JsonNode parking : parkings){
-                if (parking.get("fields").get("nom").equals(parkingName)){
-                    return parking.get("fields").get("places_restantes").intValue();
-                }
+        for(JsonNode parking : parkings){
+            if (parking.get("fields").get("nom").equals(parkingName)){
+                return parking.get("fields").get("places_restantes").intValue();
             }
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
+
         return 0;
     }
 

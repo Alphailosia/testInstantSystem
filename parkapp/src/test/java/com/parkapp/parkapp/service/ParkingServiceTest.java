@@ -1,17 +1,13 @@
 package com.parkapp.parkapp.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.parkapp.parkapp.model.Parking;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +25,7 @@ class ParkingServiceTest {
     RestTemplate restTemplate;
 
     @Test
-    void getParkings() throws URISyntaxException {
+    void getParkings() throws JsonProcessingException{
 
         String test;
 
@@ -40,11 +36,11 @@ class ParkingServiceTest {
 
         when(restTemplate.getForObject(anyString(),any())).thenReturn(test="appelé");
 
-        List<Parking> parkings = parkingService.getParkings(46.58595804860371,0.351295426580696); //
+        List<Parking> parkings = parkingService.getParkings(46.58595804860371,0.351295426580696); // le data set est celui de poitier donc les coordonnée rentré sont celle de la ville de poitiers
         assertEquals(test,"appelé");
         assertTrue(!parkings.isEmpty());
 
-        parkings = parkingService.getParkings(46.58595804860371,40.351295426580696);
+        parkings = parkingService.getParkings(46.58595804860371,40.351295426580696); // les coordonnée rentré ne sont pas celle de la ville de poitiers donc rien n'est attendue
         assertTrue(parkings.isEmpty());
     }
 }
