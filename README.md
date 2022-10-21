@@ -11,7 +11,7 @@ Voici les différentes technologies utilisées :
 - Springboot 2.7.4
 - java 1.8
 - Jackson
-- Junit5
+- Mockito
 
 ## Étapes de développement
 
